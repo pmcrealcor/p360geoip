@@ -6,17 +6,23 @@ use Palmeida\Geoip\Models\Model;
 use ZipArchive;
 
 /**
+ * Allow command line interaction
  *
+ * @author Paulo Almeida <palmeida@growin.com>
  */
 final class Command
 {
 
-	private $identifier;
+	/** Generic model instance, for database connection */
 	private $model;
+
+
+	/** List of available commands */
 	private $commands = [
 		"help" => "\tLists possible commands (this list)",
 		"tableExists" => "Checks if configured table already exists",
 		"createTable" => "Create the database table to store ip locations info",
+		// "cleanTable" => "Delete all records from the database table (todo)",
 		"tableHasData" => "Checks if configured table has data",
 		"downloadData" => "Download zip file to local storage",
 		"importData" => "Imports data from a downloaded zip file",
@@ -24,15 +30,22 @@ final class Command
 	];
 
 
+	/**
+	 * Constructor
+	 */
 	public function __construct()
 	{
 		$this->model = new Model(DB_TABLE);
 	}
 
 
+	/**
+	 * Execute - decides the command to process, base on user input
+	 * @param Array $args - Arguments passed via php_cli command line ARGV
+	 */
 	public function execute($args)
 	{
-		$command = $args[1] ?? 'help';
+		$command = $args[1] ?? '';
 
 		if (isset($this->commands[$command])) {
 			$method = "command_" . $command;
@@ -44,8 +57,14 @@ final class Command
 				echo "\t" . $commandname . " \t\t" . $description . "\n";
 			}
 		}
+		echo "\t(" . (microtime(true) - EXEC_START) . " secs)\n";
 	}
 
+
+	/**
+	 * Answers the question "Does table exists?"
+	 * Answers verbosely
+	 */
 	private function command_tableExists()
 	{
 		if($this->tableExists()) {
@@ -55,6 +74,11 @@ final class Command
 		}
 	}
 
+
+	/**
+	 * Answers the question "Does the table hava any records?"
+	 * Answers verbosely
+	 */
 	private function command_tablehasdata()
 	{
 		if($this->tableExists()) {
@@ -68,6 +92,11 @@ final class Command
 		}
 	}
 
+
+	/**
+	 * Try to create the table, if it doesn't already exists. Answers verbosely.
+	 * Answers verbosely
+	 */
 	private function command_createTable()
 	{
 		if(!$this->tableExists()) {
@@ -78,21 +107,34 @@ final class Command
 		}
 	}
 
+
+	/**
+	 * Downloads the data file (zip) to local temporary folder
+	 * Answers verbosely
+	 */
 	private function command_downloadData()
 	{
-		$this->identifier = uniqid();
-		$this->downloadFile($this->identifier);
+		$identifier = uniqid();
+		$this->downloadFile($identifier);
 		echo "File downloaded to local /tmp folder!\n";
 	}
 
+
+	/**
+	 * Downloads the data file (zip) to local temporary directory,
+	 * Unzip the file and scan for csv files,
+	 * Gets the data from csv files and
+	 * inserts all the records on database.
+	 * Answers verbosely
+	 */
 	private function command_importData()
 	{
-		$this->identifier = uniqid();
-		$this->downloadFile($this->identifier);
+		$identifier = uniqid();
+		$this->downloadFile($identifier);
 		echo "File downloaded to local /tmp folder!\n";
-		$this->unzipFiles($this->identifier);
+		$this->unzipFiles($identifier);
 		if(!$this->isTablePopulated()) {
-			$data = $this->readFiles($this->identifier);
+			$data = $this->readFiles($identifier);
 			$this->seedTable($data);
 			echo "Data imported to database table " . DB_NAME . "." . DB_TABLE . "!\n";
 		} else {
@@ -100,6 +142,11 @@ final class Command
 		}
 	}
 
+
+	/**
+	 * Makes all installation checks and steps
+	 * Answers verbosely
+	 */
 	private function command_install()
 	{
 		if(!$this->tableExists()) {
@@ -110,11 +157,11 @@ final class Command
 		}
 
 		if(!$this->isTablePopulated()) {
-			$this->identifier = uniqid();
-			$this->downloadFile($this->identifier);
+			$identifier = uniqid();
+			$this->downloadFile($identifier);
 			echo "File downloaded to local /tmp folder!\n";
-			$this->unzipFiles($this->identifier);
-			$data = $this->readFiles($this->identifier);
+			$this->unzipFiles($identifier);
+			$data = $this->readFiles($identifier);
 			$this->seedTable($data);
 			echo "Data imported to database table " . DB_NAME . "." . DB_TABLE . "!\n";
 		} else {
@@ -124,28 +171,11 @@ final class Command
 	}
 
 
-
-
-
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/**
 	 * Verify is table has records
+	 * @return Bool
 	 */
-	public function tableExists()
+	private function tableExists()
 	{
 		$query = "SELECT * FROM " . DB_TABLE;
 		$result = $this->model->conn()->query($query);
@@ -157,10 +187,12 @@ final class Command
 		return true;
 	}
 
+
 	/**
 	 * Verify is table has records
+	 * @return Bool
 	 */
-	public function isTablePopulated()
+	private function isTablePopulated()
 	{
 		$query = "SELECT * FROM " . DB_TABLE;
 		$result = $this->model->conn()->query($query);
@@ -171,7 +203,7 @@ final class Command
 	/**
 	 * Creates Table
 	 */
-	public function createTable()
+	private function createTable()
 	{
 		$query = "CREATE TABLE " . DB_TABLE . " (
 			id INT(11) NOT NULL AUTO_INCREMENT,
@@ -188,18 +220,21 @@ final class Command
 
 
 	/**
-	 *
+	 * Download de datafile to a local directory
+	 * @param String $identifier - Unique string to serve as file/folder name
 	 */
-	public function downloadFile($identifier)
+	private function downloadFile($identifier)
 	{
 		file_put_contents(TMP_DIR . $identifier . ".zip", file_get_contents(SOURCE_FILE));
 	}
 
 
 	/**
-	 *
+	 * Extracts all files in zip file to a folder with the same name
+	 * and deletes de zip file
+	 * @param String $identifier - Unique string to serve as file/folder name
 	 */
-	public function unzipFiles($identifier)
+	private function unzipFiles($identifier)
 	{
 		$zip = new ZipArchive;
 		
@@ -215,9 +250,11 @@ final class Command
 
 
 	/**
-	 *
+	 * Given a directory, scan all files and extract csv data
+	 * @param String $identifier - Unique string to serve as file/folder name
+	 * @return String - with all data
 	 */
-	public function readFiles($identifier)
+	private function readFiles($identifier)
 	{
 		// scan dir for csv files
 		$files = scandir(TMP_DIR . $identifier . "/");
@@ -233,15 +270,15 @@ final class Command
 			}
 		}
 
-		// delete files
-		// remove folder
+		rmdir(TMP_DIR . $identifier . "/");
 
 		return $filescontent;
 	}
 
 
 	/**
-	 *
+	 * Given a set of data, creates the database records
+	 * @param String $data A string with all data to be inserted
 	 */
 	public function seedTable($data)
 	{
@@ -259,14 +296,13 @@ final class Command
 				trim($parts[5]) . ")";
 
 			// lets make 1000 lines blocks, because is far better than individual
-			// and lets us avoid the max_
+			// and lets us avoid the max_allowed_packet directive on my.ini
 			if (count($query_lines) == 1000) {
 				$query = $query_start . implode(",", $query_lines);
 				$this->model->conn()->query($query);
 				$query_lines = [];
 			}
 		}
-
 
 		if (count($query_lines) > 0) {
 			$this->model->conn()->query($query_start . implode(",",$query_lines));

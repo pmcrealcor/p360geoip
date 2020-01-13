@@ -1,8 +1,14 @@
 <?php
 
+	/**
+	 * Configuration for this app
+	 *
+	 * @author Paulo Almeida <palmeida@growin.com>
+	 */
+
 	define('EXEC_START', microtime(true));
 
-	define("DB_HOST", "192.168.1.69");
+	define("DB_HOST", "192.168.19.221");
 	define("DB_USER", "root");
 	define("DB_PASS", "creazy.1");
 	define("DB_NAME", "p360geoip");

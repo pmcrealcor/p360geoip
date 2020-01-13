@@ -3,7 +3,9 @@
 namespace Palmeida\Geoip\Controllers;
 
 /**
+ * A base Controller
  *
+ * @author Paulo Almeida <palmeida@growin.com>
  */
 class Controller
 {

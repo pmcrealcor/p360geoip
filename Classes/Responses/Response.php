@@ -3,7 +3,9 @@
 namespace Palmeida\Geoip\Responses;
 
 /**
+ * Application base response
  *
+ * @author Paulo Almeida <palmeida@growin.com>
  */
 final class Response
 {
@@ -20,7 +22,7 @@ final class Response
 	}
 
 	/**
-	 * Handover
+	 * Handover a response
 	 */
 	public function handover()
 	{
@@ -33,6 +35,11 @@ final class Response
 		echo json_encode($this->data);
 	}
 
+	/**
+	 * Retrieves de execution time
+	 *
+	 * @return float
+	 */
 	private function execTime()
 	{
 		return microtime(true) - EXEC_START;

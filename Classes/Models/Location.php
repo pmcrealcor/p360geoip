@@ -3,18 +3,25 @@
 namespace Palmeida\Geoip\Models;
 
 /**
+ * A Model representation of a databasa table
  *
+ * @author Paulo Almeida <palmeida@growin.com>
  */
 final class Location extends Model
 {
 
+	/**
+	 * Constructor
+	 */
 	public function __construct()
 	{
 		parent::__construct("GeoIpCountryWhois");
 	}
 
 	/**
+	 * Helper to make a specific query
 	 *
+	 * @param string $ip - An IP address
 	 */
 	public function findByIP($ip)
 	{
@@ -32,6 +39,11 @@ final class Location extends Model
 		}
 	}
 
+	/**
+	 * Retrieves this object data transformed as an array
+	 *
+	 * @return Array
+	 */
 	public function asTransformedArray()
 	{
 		if ($this->__loaded) {
@@ -40,5 +52,7 @@ final class Location extends Model
 				'countryCode' => $this->__data['country_code'],
 			];
 		}
+		return [];
 	}
+
 }

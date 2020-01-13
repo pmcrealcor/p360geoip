@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @author Paulo Almeida - palmeida @ growin.com
- *
+ * A PHP exercise - A simple API that gives you de location (country) of a given IP
  * 
+ * @author Paulo Almeida <palmeida@growin.com>
  */
 
 include_once("./env.php");

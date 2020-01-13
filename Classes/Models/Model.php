@@ -5,14 +5,24 @@ namespace Palmeida\Geoip\Models;
 use MySQLi;
 
 /**
+ * Base model for extension
  *
+ * @author Paulo Almeida <palmeida@growin.com>
  */
 class Model
 {
+	/** A mysqli connection resource */
 	protected $__connection;
+
+	/** The table name that the model will refer to */
 	protected $__tablename;
+
+	/** A boolean tha indicates if the model is loaded*/
 	protected $__loaded;
+
+	/** The data retrieved from database for this model */
 	protected $__data;
+
 
 	/**
 	 * Constructor
@@ -27,7 +37,9 @@ class Model
 
 
 	/**
+	 * Load a record data to the model instance
 	 *
+	 * @param int $id - Unique identifier for the record on database
 	 */
 	public function load($id)
 	{
@@ -41,7 +53,9 @@ class Model
 
 
 	/**
+	 * Checks if an instance has data refering to a database record
 	 *
+	 * @return Bool
 	 */
 	public function isLoaded() {
 		return $this->__loaded;
@@ -49,7 +63,9 @@ class Model
 
 
 	/**
+	 * Gets the data attribute of an instance
 	 *
+	 * @return Array|Object
 	 */
 	public function data() {
 		return $this->__data;
@@ -57,7 +73,8 @@ class Model
 
 
 	/**
-	 *
+	 * Gets the connection resource for database interactions
+	 * @return resource
 	 */
 	public function conn() {
 		return $this->__connection;

@@ -6,13 +6,16 @@ use Palmeida\Geoip\Models\Location;
 use Palmeida\Geoip\Responses\Response;
 
 /**
+ * Controller for the main application features
  *
+ * @author Paulo Almeida <palmeida@growin.com>
  */
 final class GeoipController extends Controller
 {
 
 	/**
-	 *
+	 * The main action for this API
+	 * @return Response
 	 */
 	public function locationByIp()
 	{

@@ -5,7 +5,9 @@ namespace Palmeida\Geoip\Router;
 use Palmeida\Geoip\Responses\Response;
 
 /**
- *
+ * Application Router
+ * 
+ * @author Paulo Almeida <palmeida@growin.com>
  */
 final class Router
 {
@@ -43,6 +45,8 @@ final class Router
 
 	/**
 	 * Execute the request
+	 *
+	 * @return Object - Response()
 	 */
 	public function execute()
 	{
@@ -63,6 +67,8 @@ final class Router
 
 	/**
 	 * Retrieve the request method
+	 *
+	 * @return string
 	 */
 	private function requestMethod()
 	{
@@ -71,6 +77,9 @@ final class Router
 
 	/**
 	 * Retrieve the request endpoint
+	 *
+	 * @return string
+
 	 */
 	private function requestEndpoint()
 	{
