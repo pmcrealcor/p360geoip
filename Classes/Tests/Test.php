@@ -7,9 +7,18 @@ class Test extends TestCase
 
  	public function testResponseForPortugueseIP(): void
     {
-		$response = $this->get("");
-        $response->assertStatus(200);
-        $this->assertEquals(['country' => 'Portugal', 'countryCode' => 'PT'], json_decode($response->getContent())->data);
+    	$ip = "87.103.122.191"; // portuguese ip
+
+		$client = new GuzzleHttp\Client();
+		$response = $client->get('http://p360geoip.local/locationByIP?IP=' . $ip);
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+	    $contentType = $response->getHeaders()["Content-Type"][0];
+	    $this->assertEquals("application/json", $contentType);
+
+		$data = json_decode($response->getBody(), true);
+		$this->assertEquals(['country' => 'Portugal', 'countryCode' => 'PT'], $data['data']);
     }
 
 }

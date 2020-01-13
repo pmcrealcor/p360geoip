@@ -7,6 +7,9 @@
 	 */
 
 	define('EXEC_START', microtime(true));
+	define('INC_EXEC_TIME', true);
+	
+	define('ENVIRONMENT', 'local');
 
 	define("DB_HOST", "192.168.19.221");
 	define("DB_USER", "root");

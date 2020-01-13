@@ -19,6 +19,7 @@ final class Response
 	{
 		$this->status = $status;
 		$this->data = $data;
+		$this->checkData($ip);
 	}
 
 	/**
@@ -27,11 +28,7 @@ final class Response
 	public function handover()
 	{
 		http_response_code($this->status);
-
-		if($this->data) {
-			$this->data['execution_time'] = $this->execTime();
-		}
-
+		header('Content-Type: application/json');
 		echo json_encode($this->data);
 	}
 
@@ -45,4 +42,19 @@ final class Response
 		return microtime(true) - EXEC_START;
 	}
 
+	/**
+	 * Checks is data is set, and adds the exec time metric
+	 */
+	private function checkData($ip)
+	{
+		if($this->data &&
+			$ip && 
+			$ip == "127.0.0.1") {
+			$this->data['message'] = "There's no place like home! < L. Frank Baum >";
+		}
+
+		if($this->data && INC_EXEC_TIME) {
+			$this->data['execution_time'] = $this->execTime();
+		}
+	}
 }
