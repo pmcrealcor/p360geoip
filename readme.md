@@ -46,6 +46,7 @@ File env.php defines all configurations needed:
 	INC_EXEC_TIME -> Set if execution time should be added to response data
 	ENVIRONMENT -> Set the environment for this app, either 'local' or 'production' (not used yet)
 	BASE_URL -> De domain name where application is installed (for testing purposes)
+	TEST_IP -> A Portuguese IP address to test
 	DB_HOST -> mysql hostname
 	DB_USER -> mysql username
 	DB_PASS -> mysql password
