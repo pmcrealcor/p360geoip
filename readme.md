@@ -71,18 +71,12 @@ As this project does not have a Website of it's own, I'll share some links to ge
 ## Exercise task list
 
 1. Skills
-1.1. Retrieving and working with remote resources
-<img src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
-1.2. Building and populating databases
-<img src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
-1.3. Structuring PHP applications
-<img src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
-1.4. Designing and serving REST APIs
-<img src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
-1.5. Use of Github (public or private repo) or other public code repository service
-<img src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
-1.6. Documenting web services and applications
-<img src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
+1.1. Retrieving and working with remote resources <img width="30px" src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
+1.2. Building and populating databases <img width="30px" src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
+1.3. Structuring PHP applications <img width="30px" src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
+1.4. Designing and serving REST APIs <img width="30px" src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
+1.5. Use of Github (public or private repo) or other public code repository service <img width="30px" src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
+1.6. Documenting web services and applications <img width="30px" src="https://github.com/pmcrealcor/p360geoip/blob/master/check.png?raw=true" />
 
 2. Output
 2.1. A process for constructing a database to hold the GeoLite Country reference data
