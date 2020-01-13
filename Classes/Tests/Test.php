@@ -10,7 +10,7 @@ class Test extends TestCase
     	$ip = "87.103.122.191"; // portuguese ip
 
 		$client = new GuzzleHttp\Client();
-		$response = $client->get('http://p360geoip.local/locationByIP?IP=' . $ip);
+		$response = $client->get(BASE_URL . 'locationByIP?IP=' . $ip);
 
         $this->assertEquals(200, $response->getStatusCode());
 
